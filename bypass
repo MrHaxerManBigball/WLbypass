@@ -1,0 +1,22 @@
+local function GetURL(scripturl)
+	if shared.VapeDeveloper then
+		if not isfile("vape/"..scripturl) then
+			error("File not found : vape/"..scripturl)
+		end
+		return readfile("vape/"..scripturl)
+	else
+		local res = game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/"..scripturl, true)
+		assert(res ~= "404: Not Found", "File not found")
+		return res
+	end
+end
+local storedshahashes = {}
+local Functions = {}
+local shalib = loadstring(GetURL("Libraries/sha.lua"))()
+Functions.hashfunc = function(str)
+if storedshahashes[tostring(str)] == nil then
+	storedshahashes[tostring(str)] = shalib.sha512(tostring(str).."SelfReport")
+end
+return storedshahashes[tostring(str)]
+end
+return Functions
